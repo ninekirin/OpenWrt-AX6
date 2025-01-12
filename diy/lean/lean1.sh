@@ -1,9 +1,4 @@
 #!/bin/bash
-#=================================================
-# DaoDao's script
-#=================================================
-##添加自己的插件库
-rm -rf ./package/lean/k3screenctrl
-               
-sed -i "1isrc-git 2305ipk https://github.com/xiangfeidexiaohuo/2305-ipk\n" feeds.conf.default
 
+# fix fullcone nat
+curl -sSL https://raw.githubusercontent.com/chenmozhijin/turboacc/luci/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
