@@ -1,4 +1,4 @@
-name: Build_x86_6_6
+name: build_x86_6_6
 
 on:
   repository_dispatch:
@@ -9,7 +9,7 @@ on:
 #   - cron: 30 18 * * 4
 
 jobs:
-  Build_x86_6_6:
+  build_x86_6_6:
     runs-on: ubuntu-20.04
     steps:
       - name: Clone Repository
@@ -64,7 +64,7 @@ jobs:
 
           sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='OpenWrt-X86-Lite-$(date +%Y%m%d)'/g" package/lean/default-settings/files/zzz-default-settings
 
-      - name: Configuration Customization - Build_x86_6_6
+      - name: Configuration Customization - build_x86_6_6
         env:
           CONFIG_FILE: "./configs/X86/x86_6_6.config"
         run: |

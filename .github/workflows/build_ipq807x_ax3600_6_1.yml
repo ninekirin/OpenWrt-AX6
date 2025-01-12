@@ -1,4 +1,4 @@
-name: Build_ipq807x_ax3600_61
+name: build_ipq807x_ax3600_6_1
 
 on:
   repository_dispatch:
@@ -9,7 +9,7 @@ on:
 #   - cron: 30 18 * * 5
 
 jobs:
-  Build_ipq807x_ax3600_61:
+  build_ipq807x_ax3600_6_1:
     runs-on: ubuntu-20.04
     steps:
       - name: Clone Repository
@@ -65,7 +65,7 @@ jobs:
 
           sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='OpenWrt-Xiaomi-AX3600-$(date +%Y%m%d)'/g" package/lean/default-settings/files/zzz-default-settings
 
-      - name: Configuration Customization - Build_ipq807x_ax3600_61
+      - name: Configuration Customization - build_ipq807x_ax3600_6_1
         env:
           CONFIG_FILE: "./configs/ARM/ipq/ax3600_6_1.config"
         run: |
