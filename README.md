@@ -1,3 +1,3 @@
-# OpenWrt AX6 Compile Test
+# OpenWrt AX6 Compilation Test
 
 ## FullCone NAT Support Test
