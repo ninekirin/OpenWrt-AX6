@@ -1,9 +1,6 @@
 #!/bin/bash
 # OpenWrt DIY script part 2 (After Update feeds)
 
-# fix fullcone nat (must remove unnecessary includes for lean's lede)
-# curl -sSL https://raw.githubusercontent.com/chenmozhijin/turboacc/luci/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh --no-sfe
-
 # translation fix
 echo -e "\nmsgid \"NAS\"" >> feeds/luci/modules/luci-base/po/zh_Hans/base.po
 echo -e "msgstr \"网络存储\"" >> feeds/luci/modules/luci-base/po/zh_Hans/base.po
