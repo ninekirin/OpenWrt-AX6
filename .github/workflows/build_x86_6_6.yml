@@ -1,4 +1,4 @@
-name: build_x86_6_6
+name: build_x86_64_6_6
 
 on:
   repository_dispatch:
@@ -9,13 +9,13 @@ on:
 #   - cron: 30 18 * * 4
 
 jobs:
-  build_x86_6_6:
+  build_x86_64_6_6:
     runs-on: ubuntu-20.04
     steps:
       - name: Clone Repository
         uses: actions/checkout@v4
 
-      - name: Initialization environment
+      - name: Initialization Environment
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
@@ -35,7 +35,7 @@ jobs:
           git config --global user.name 'GitHub Actions' && git config --global user.email 'noreply@github.com'
           df -h
 
-      - name: Clone source code
+      - name: Clone Source Code
         env:
           REPO_URL: https://github.com/coolsnowwolf/lede
           REPO_BRANCH: master
@@ -45,7 +45,7 @@ jobs:
           cp -f ../diy/diy1.sh ./
           chmod +x ./diy1.sh && ./diy1.sh
 
-      - name: Update & Install feeds
+      - name: Update & Install Feeds
         working-directory: ./openwrt
         run: |
           ./scripts/feeds update -a
@@ -57,23 +57,23 @@ jobs:
           sed -i "s/KERNEL_PATCHVER:=*.*/KERNEL_PATCHVER:=6.6/g" target/linux/x86/Makefile
           sed -i "s/KERNEL_TESTING_PATCHVER:=*.*/KERNEL_TESTING_PATCHVER:=6.6/g" target/linux/x86/Makefile      
 
-          sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='OpenWrt-X86-Lite-$(date +%Y%m%d)'/g" package/lean/default-settings/files/zzz-default-settings
+          sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='OpenWrt-x86_64-$(date +%Y%m%d)'/g" package/lean/default-settings/files/zzz-default-settings
 
       - name: Configuration Customization - build_x86_6_6
         env:
-          CONFIG_FILE: "./configs/X86/x86_6_6.config"
+          CONFIG_FILE: "./configs/x86_64/x86_64_6_6.config"
         run: |
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
           cd openwrt && make defconfig
 
-      - name: Download package
+      - name: Download Packages
         working-directory: ./openwrt
         run: |
           make download -j$(nproc)
           find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
 
-      - name: Build firmware
+      - name: Build Firmware
         working-directory: ./openwrt
         run: |
           make -j$(nproc) V=s
@@ -81,9 +81,9 @@ jobs:
       - name: Assemble Artifact
         id: assemble_artifact
         run: |
-          rm -rf ./X86_Out
-          mkdir -p ./X86_Out/
-          cp -a ./openwrt/.config ./X86_Out/x86_6_6.config
+          rm -rf ./x86_64_Output
+          mkdir -p ./x86_64_Output/
+          cp -a ./openwrt/.config ./x86_64_Output/x86_6_6.config
 
           getmd5()
           {
@@ -92,27 +92,27 @@ jobs:
           md5=`echo ${md5:0:10}`
           }
 
-          rom=openwrt/bin/targets/x86/64/openwrt-x86-64-generic-squashfs-combined-efi.img.gz
+          rom=openwrt/bin/targets/x86/64/openwrt-x86_64-64-generic-squashfs-combined-efi.img.gz
           getmd5 $rom
 
-          cp -a $rom ./X86_Out/OpenWrt-X86-Lite-6.6-2305-$(date +%Y%m%d)_${md5}.img.gz
+          cp -a $rom ./x86_64_Output/OpenWrt-x86_64-6.6-lean-$(date +%Y%m%d)_${md5}.img.gz
 
       - name: Upload Firmwares
         uses: actions/upload-artifact@main
         with:
-          name: X86-OpenWrt-6.6-lite
-          path: X86_Out/*.img.gz
+          name: x86_64-OpenWrt
+          path: x86_64_Output/*.img.gz
 
-      - name: Upload config
+      - name: Upload Config
         uses: actions/upload-artifact@main
         with:
-          name: X6-6.6-lite-config
-          path: X86_Out/x86_6_6.config
+          name: x86_64-Config
+          path: x86_64_Output/x86_64_6_6.config
 
       - name: Upload Packages
         uses: actions/upload-artifact@main
         with:
-          name: X86-66-Packages
+          name: x86_64-Packages
           path: openwrt/bin/packages
 
       - name: Generate Tag & Release Name
@@ -120,14 +120,14 @@ jobs:
         run: |
           time=$(date +%Y%m%d%H%M%S)
           release_tag="$time"
-          release_name="X86_64-6.6-2305-$(date +%Y%m%d)"
+          release_name="x86_64-6.6-lean-$(date +%Y%m%d)"
           echo "release_name=$release_name" >> $GITHUB_OUTPUT
           echo "release_tag=$release_tag" >> $GITHUB_OUTPUT
 
       - name: Create Release & Upload
         uses: ncipollo/release-action@v1.14.0
         with:
-          artifacts: X86_Out/*.img.gz
+          artifacts: x86_64_Output/*.img.gz
           name: ${{ steps.generate_name.outputs.release_name }}
           tag: ${{ steps.generate_name.outputs.release_tag }}
           token: ${{ secrets.GITHUB_TOKEN }}
