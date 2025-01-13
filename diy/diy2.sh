@@ -12,14 +12,18 @@ sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/luci2/bin/config_generat
 # 清除默认密码password
 sed -i '/V4UetPzk$CYXluq4wUazHjmCDBCqXF/d' package/lean/default-settings/files/zzz-default-settings
 
-# 加入作者信息
+# 加入编译者信息
 sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='OpenWrt-$(date +%Y%m%d)'/g" package/lean/default-settings/files/zzz-default-settings   
 sed -i "s/DISTRIB_REVISION='*.*'/DISTRIB_REVISION=' by Kirin'/g" package/lean/default-settings/files/zzz-default-settings
 
-# 更改主机名
+# 更改主机名（LEDE → OpenWrt）
 sed -i "s/hostname='.*'/hostname='OpenWrt'/g" package/base-files/files/bin/config_generate
 sed -i "s/hostname='.*'/hostname='OpenWrt'/g" package/base-files/luci2/bin/config_generate
 
 # 清除多余的软件包源
 sed -i "2ised -i '/kenzok/d' /etc/opkg/distfeeds.conf" package/lean/default-settings/files/zzz-default-settings
 sed -i "3ised -i '/kenzok/d' /etc/opkg/distfeeds.conf" package/lean/default-settings/files/zzz-default-settings
+
+# Replace Golang with the latest version
+rm -rf feeds/packages/lang/golang
+git clone https://github.com/kenzok8/golang feeds/packages/lang/golang
