@@ -20,6 +20,6 @@ sed -i "s/DISTRIB_REVISION='*.*'/DISTRIB_REVISION=' by Kirin'/g" package/lean/de
 sed -i "s/hostname='.*'/hostname='OpenWrt'/g" package/base-files/files/bin/config_generate
 sed -i "s/hostname='.*'/hostname='OpenWrt'/g" package/base-files/luci2/bin/config_generate
 
-## 使用新版golang
-rm -rf feeds/packages/lang/golang
-git clone https://github.com/sbwml/packages_lang_golang -b 23.x feeds/packages/lang/golang
+# 清除多余的软件包源
+sed -i "2ised -i '/kenzok/d' /etc/opkg/distfeeds.conf" package/lean/default-settings/files/zzz-default-settings
+sed -i "3ised -i '/kenzok/d' /etc/opkg/distfeeds.conf" package/lean/default-settings/files/zzz-default-settings
