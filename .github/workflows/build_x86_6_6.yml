@@ -103,10 +103,10 @@ jobs:
           md5=`echo ${md5:0:10}`
           }
 
-          rom=openwrt/bin/targets/x86/64/openwrt-x86_64-64-generic-squashfs-combined-efi.img.gz
+          rom=openwrt/bin/targets/x86/64/openwrt-x86-64-generic-squashfs-combined-efi.img.gz
           getmd5 $rom
 
-          cp -a $rom ./x86_64_Output/OpenWrt-x86_64-6.6-lean-$(date +%Y%m%d)_${md5}.img.gz
+          cp -a $rom ./x86_64_Output/OpenWrt-x86-64-6.6-lean-$(date +%Y%m%d)_${md5}.img.gz
 
       - name: Upload Firmwares
         uses: actions/upload-artifact@main
