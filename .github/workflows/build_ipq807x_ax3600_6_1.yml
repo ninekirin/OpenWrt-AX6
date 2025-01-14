@@ -65,7 +65,6 @@ jobs:
           cp -f ../diy/diy2.sh ./        
           chmod +x ./diy2.sh && ./diy2.sh
 
-
           sed -i "s/KERNEL_PATCHVER:=*.*/KERNEL_PATCHVER:=6.1/g" target/linux/qualcommax/Makefile
           sed -i "s/KERNEL_TESTING_PATCHVER:=*.*/KERNEL_TESTING_PATCHVER:=6.1/g" target/linux/qualcommax/Makefile   
 
@@ -78,7 +77,7 @@ jobs:
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
           cd openwrt && make defconfig
 
-      - name: Download Package
+      - name: Download Packages
         working-directory: ./openwrt
         run: |
           make download -j$(nproc)
@@ -105,11 +104,11 @@ jobs:
           }
 
           rom=openwrt/bin/targets/qualcommax/ipq807x/openwrt-qualcommax-ipq807x-xiaomi_ax3600-squashfs-sysupgrade.bin
-          getmd5 $rom        
+          getmd5 $rom
           cp -a $rom ./ARM_Output/OpenWrt-Xiaomi-AX3600-6.1-lean-sysupgrade-$(date +%Y%m%d)_${md5}.bin
 
           rom=openwrt/bin/targets/qualcommax/ipq807x/openwrt-qualcommax-ipq807x-xiaomi_ax3600-squashfs-factory.ubi
-          getmd5 $rom         
+          getmd5 $rom
           cp -a $rom ./ARM_Output/OpenWrt-Xiaomi-AX3600-6.1-lean-factory-$(date +%Y%m%d)_${md5}.ubi
 
       - name: Upload Firmwares
