@@ -21,6 +21,10 @@ sed -i "s/hostname='.*'/hostname='OpenWrt'/g" package/base-files/files/bin/confi
 sed -i "s/hostname='.*'/hostname='OpenWrt'/g" package/base-files/luci2/bin/config_generate
 
 # 清除多余的软件包源
-sed -i "2ised -i '/kenzo/d' /etc/opkg/distfeeds.conf" package/lean/default-settings/files/zzz-default-settings
-sed -i "3ised -i '/small/d' /etc/opkg/distfeeds.conf" package/lean/default-settings/files/zzz-default-settings
-sed -i "4ised -i '/kirinextra/d' /etc/opkg/distfeeds.conf" package/lean/default-settings/files/zzz-default-settings
+sed -i "2ised -i '/kirinextra/d' /etc/opkg/distfeeds.conf" package/lean/default-settings/files/zzz-default-settings
+sed -i "3ised -i '/kenzo/d' /etc/opkg/distfeeds.conf" package/lean/default-settings/files/zzz-default-settings
+sed -i "4ised -i '/small/d' /etc/opkg/distfeeds.conf" package/lean/default-settings/files/zzz-default-settings
+
+# 替换最新版 Golang 编译环境
+rm -rf feeds/packages/lang/golang
+git clone https://github.com/sbwml/packages_lang_golang -b 23.x feeds/packages/lang/golang
